@@ -1,0 +1,95 @@
+diff --git a/src/globals.cpp b/src/globals.cpp
+index 98ba45c..fd55e4d 100755
+--- a/src/globals.cpp
++++ b/src/globals.cpp
+@@ -289,7 +289,7 @@ const char *getDeviceName() noexcept
+         else
+     {
+          printf("-RR- File %s not found. Let's try to search in envioronment variables to identify the device name....\n", OS_ARCH_FILE.c_str());
+-        const char *envVar = std::getenv("DEVICE_NAME");
++        const char *envVar = std::getenv("QUIRK_DEVICE");
+         if (envVar != nullptr)
+         {
+             // Copy the environment variable value to DEVICE_NAME
+@@ -301,7 +301,7 @@ const char *getDeviceName() noexcept
+         }
+         else
+         {
+-            std::cout << "Environment variable \"DEVICE_NAME\" not set. Device name undefined!" << std::endl;
++            std::cout << "Environment variable \"QUIRK_DEVICE\" not set. Device name undefined!" << std::endl;
+         }
+         deviceInitialized = true;
+     }
+@@ -326,27 +326,27 @@ bool checkDeviceName(char *target)
+ 
+ bool isRG351M()
+ {
+-    return checkDeviceName((char *)"RG351M"); // strcmp(DEVICE_NAME, "RG351M\n") == 0;
++    return checkDeviceName((char *)"Anbernic RG351M"); // strcmp(DEVICE_NAME, "RG351M\n") == 0;
+ }
+ bool isRG351P()
+ {
+-    return checkDeviceName((char *)"RG351P"); // strcmp(DEVICE_NAME, "RG351P\n") == 0;
++    return checkDeviceName((char *)"Anbernic RG351P"); // strcmp(DEVICE_NAME, "RG351P\n") == 0;
+ }
+ bool isRG351V()
+ {
+-    return checkDeviceName((char *)"RG351V"); // strcmp(DEVICE_NAME, "RG351V\n") == 0;
++    return checkDeviceName((char *)"Anbernic RG351V"); // strcmp(DEVICE_NAME, "RG351V\n") == 0;
+ }
+ bool isRG351MP()
+ {
+-    return checkDeviceName((char *)"RG351MP"); // strcmp(DEVICE_NAME, "RG351MP\n") == 0;
++    return checkDeviceName((char *)"Anbernic RG351MP"); // strcmp(DEVICE_NAME, "RG351MP\n") == 0;
+ }
+ bool isRG552()
+ {
+-    return checkDeviceName((char *)"RG552"); // strcmp(DEVICE_NAME, "RG552\n") == 0;
++    return checkDeviceName((char *)"Anbernic RG552"); // strcmp(DEVICE_NAME, "RG552\n") == 0;
+ }
+ bool isRG503()
+ {
+-    return checkDeviceName((char *)"RG503"); // strcmp(DEVICE_NAME, "RG552\n") == 0;
++    return checkDeviceName((char *)"Anbernic RG503"); // strcmp(DEVICE_NAME, "RG552\n") == 0;
+ }
+ 
+ std::vector<std::string> exec(const char *cmd)
+diff --git a/src/go2/input.cpp b/src/go2/input.cpp
+index 663abe8..c287eac 100644
+--- a/src/go2/input.cpp
++++ b/src/go2/input.cpp
+@@ -41,7 +41,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ #define BATTERY_BUFFER_SIZE (128)
+ #define BRIGHTNESS_BUFFER_SIZE (128)
+ // joypad
+-static const char *EVDEV_NAME = "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick";
++static const char *EVDEV_NAME = "/dev/input/by-path/platform-xbox360-joypad-event-joystick";
+ static const char *EVDEV_NAME_2 = "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick";
+ static const char* EVDEV_NAME_3 = "/dev/input/by-path/platform-singleadc-joypad-event-joystick";
+ // battery
+diff --git a/src/main.cpp b/src/main.cpp
+index 71fda7c..fd1f870 100755
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -86,7 +86,7 @@ const char *arg_rom = "";
+ typedef std::map<std::string, std::string> varmap_t;
+ varmap_t variables;
+ int exitFlag = -1;
+-const char *opt_setting_file = "/storage/.config/distribution/configs/retrorun.cfg";
++const char *opt_setting_file = "/storage/.config/retrorun/retrorun.cfg";
+ std::map<std::string, std::string> conf_map;
+ bool opt_show_fps = false;
+ bool auto_save = false; 
+diff --git a/src/audio.cpp b/src/audio.cpp
+index 650ab3f..bb46ba8 100755
+--- a/src/audio.cpp
++++ b/src/audio.cpp
+@@ -59,7 +59,7 @@ void audio_init(int freq)
+     audio = go2_audio_create(freq);
+     audioFrameCount = 0;
+ 
+-      soundCardName = isRG552()? "DAC" : isRG503()? "Playback Path" : "Playback";
++    soundCardName = "Master";
+     
+     if (opt_volume > -1)
+     {

@@ -147,6 +147,10 @@ case ${EMULATOR} in
     jslisten set "-9 mednafen"
     RUNTHIS='${RUN_SHELL} /usr/bin/start_mednafen.sh "${ROMNAME}" "${CORE}" "${PLATFORM}"'
   ;;
+  retrorun)
+    jslisten set "-9 retrorun"
+    RUNTHIS='${RUN_SHELL} /usr/bin/start_retrorun.sh "${CORE}" "${ROMNAME}" "${PLATFORM}"'
+  ;;
   retroarch)
     # Make sure NETWORK_PLAY isn't defined before we start our tests/configuration.
     del_setting netplay.mode
