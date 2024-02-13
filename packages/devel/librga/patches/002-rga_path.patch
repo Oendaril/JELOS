@@ -1,0 +1,13 @@
+diff --git a/core/NormalRga.cpp b/core/NormalRga.cpp
+index 5f4bc5b..d9df6fc 100755
+--- a/core/NormalRga.cpp
++++ b/core/NormalRga.cpp
+@@ -101,7 +101,7 @@ int NormalRgaOpen(void **context) {
+         goto init;
+     }
+ 
+-    fd = open("/dev/rga", O_RDWR, 0);
++    fd = open("/dev/video0", O_RDWR, 0);
+     if (fd < 0) {
+         ret = -ENODEV;
+         ALOGE("failed to open DRM:%s.",strerror(errno));

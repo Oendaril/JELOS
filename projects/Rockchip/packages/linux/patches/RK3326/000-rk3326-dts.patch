@@ -18,8 +18,8 @@ diff -rupN linux.orig/arch/arm64/boot/dts/rockchip/Makefile linux/arch/arm64/boo
  dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3328-evb.dtb
  dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3328-nanopi-r2c.dtb
 diff -rupN linux.orig/arch/arm64/boot/dts/rockchip/px30.dtsi linux/arch/arm64/boot/dts/rockchip/px30.dtsi
---- linux.orig/arch/arm64/boot/dts/rockchip/px30.dtsi	2024-02-03 14:24:30.507369024 +0000
-+++ linux/arch/arm64/boot/dts/rockchip/px30.dtsi	2024-02-03 14:25:41.221185291 +0000
+--- linux.orig/arch/arm64/boot/dts/rockchip/px30.dtsi	2024-01-17 13:11:53.238340729 -0500
++++ linux/arch/arm64/boot/dts/rockchip/px30.dtsi	2024-02-12 09:00:06.000000000 -0500
 @@ -114,32 +114,22 @@
  		compatible = "operating-points-v2";
  		opp-shared;
@@ -117,6 +117,40 @@ diff -rupN linux.orig/arch/arm64/boot/dts/rockchip/px30.dtsi linux/arch/arm64/bo
  		};
  	};
  
+@@ -1239,6 +1243,19 @@
+ 		#iommu-cells = <0>;
+ 		status = "disabled";
+ 	};
++	
++	rga: rga@ff480000 {
++		compatible = "rockchip,px30-rga", "rockchip,rk3288-rga";
++		reg = <0x00 0xff480000 0x00 0x10000>;
++		interrupts = <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&cru ACLK_RGA>, <&cru HCLK_RGA>,  <&cru SCLK_RGA_CORE>;
++		clock-names = "aclk", "hclk", "sclk";
++		power-domains = <&power PX30_PD_VO>;
++		resets = <&cru SRST_RGA>, <&cru SRST_RGA_A>, <&cru SRST_RGA_H>;
++		reset-names = "core", "axi", "ahb";
++		dma-coherent;
++		status = "disabled";
++	};
+ 
+ 	isp: isp@ff4a0000 {
+ 		compatible = "rockchip,px30-cif-isp"; /*rk3326-rkisp1*/
+diff -rupN linux.orig/arch/arm64/boot/dts/rockchip/rk3326.dtsi linux/arch/arm64/boot/dts/rockchip/rk3326.dtsi
+--- linux.orig/arch/arm64/boot/dts/rockchip/rk3326.dtsi	2024-01-17 13:11:53.238340729 -0500
++++ linux/arch/arm64/boot/dts/rockchip/rk3326.dtsi	2024-02-12 09:03:00.823070272 -0500
+@@ -9,6 +9,10 @@
+ 	ports = <&vopb_out>;
+ };
+ 
++&rga {
++	status = "okay";
++};
++
+ /delete-node/ &dsi_in_vopl;
+ /delete-node/ &lvds_vopl_in;
+ /delete-node/ &vopl;
 diff -rupN linux.orig/arch/arm64/boot/dts/rockchip/rk3326-anbernic-rg351m.dts linux/arch/arm64/boot/dts/rockchip/rk3326-anbernic-rg351m.dts
 --- linux.orig/arch/arm64/boot/dts/rockchip/rk3326-anbernic-rg351m.dts	2024-02-03 14:24:30.507369024 +0000
 +++ linux/arch/arm64/boot/dts/rockchip/rk3326-anbernic-rg351m.dts	2024-02-03 14:25:41.221185291 +0000
